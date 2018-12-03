@@ -1,5 +1,11 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Prerequisitos
+
+Hay que instalar las dependencias de:
+
+### `npm install --save-dev axios react-router-dom sweetalert2`
+
 ## Available Scripts
 
 In the project directory, you can run:
