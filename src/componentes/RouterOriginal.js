@@ -7,16 +7,63 @@ import UsersSection from './UsersSection';
 import SingleUser from './SingleUser';
 import UserForm from './UserForm';
 import swal from 'sweetalert2';
+import Auth from '../Auth/Auth';
+import history from '../history';
+import Callback from './Callback/Callback';
+
+const auth = new Auth();
+
+const handleAuthentication = ({location}) => {
+     if (/access_token|id_token|error/.test(location.hash)) {
+       auth.handleAuthentication();
+     }
+ }
 
 class Router extends Component {
      state = { 
           users: [],
           auth0_domain: 'masmovil.eu.auth0.com',
-          auth0_token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik1VTkJNa0ZGTWtKQlFqVkRPVFV4TlVWQ04wRTRPVEV5UWpGRFJFSTFNMFZEUXpBMU1UVTVNQSJ9.eyJpc3MiOiJodHRwczovL21hc21vdmlsLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJ2c3lqa0cxQ09DSlFEN2U4SU44R0ZoWmpEdzg1THNXNUBjbGllbnRzIiwiYXVkIjoiaHR0cHM6Ly9tYXNtb3ZpbC5ldS5hdXRoMC5jb20vYXBpL3YyLyIsImlhdCI6MTU0Mzg1OTkzMCwiZXhwIjoxNTQzOTQ2MzMwLCJhenAiOiJ2c3lqa0cxQ09DSlFEN2U4SU44R0ZoWmpEdzg1THNXNSIsInNjb3BlIjoicmVhZDpjbGllbnRfZ3JhbnRzIGNyZWF0ZTpjbGllbnRfZ3JhbnRzIGRlbGV0ZTpjbGllbnRfZ3JhbnRzIHVwZGF0ZTpjbGllbnRfZ3JhbnRzIHJlYWQ6dXNlcnMgdXBkYXRlOnVzZXJzIGRlbGV0ZTp1c2VycyBjcmVhdGU6dXNlcnMgcmVhZDp1c2Vyc19hcHBfbWV0YWRhdGEgdXBkYXRlOnVzZXJzX2FwcF9tZXRhZGF0YSBkZWxldGU6dXNlcnNfYXBwX21ldGFkYXRhIGNyZWF0ZTp1c2Vyc19hcHBfbWV0YWRhdGEgY3JlYXRlOnVzZXJfdGlja2V0cyByZWFkOmNsaWVudHMgdXBkYXRlOmNsaWVudHMgZGVsZXRlOmNsaWVudHMgY3JlYXRlOmNsaWVudHMgcmVhZDpjbGllbnRfa2V5cyB1cGRhdGU6Y2xpZW50X2tleXMgZGVsZXRlOmNsaWVudF9rZXlzIGNyZWF0ZTpjbGllbnRfa2V5cyByZWFkOmNvbm5lY3Rpb25zIHVwZGF0ZTpjb25uZWN0aW9ucyBkZWxldGU6Y29ubmVjdGlvbnMgY3JlYXRlOmNvbm5lY3Rpb25zIHJlYWQ6cmVzb3VyY2Vfc2VydmVycyB1cGRhdGU6cmVzb3VyY2Vfc2VydmVycyBkZWxldGU6cmVzb3VyY2Vfc2VydmVycyBjcmVhdGU6cmVzb3VyY2Vfc2VydmVycyByZWFkOmRldmljZV9jcmVkZW50aWFscyB1cGRhdGU6ZGV2aWNlX2NyZWRlbnRpYWxzIGRlbGV0ZTpkZXZpY2VfY3JlZGVudGlhbHMgY3JlYXRlOmRldmljZV9jcmVkZW50aWFscyByZWFkOnJ1bGVzIHVwZGF0ZTpydWxlcyBkZWxldGU6cnVsZXMgY3JlYXRlOnJ1bGVzIHJlYWQ6cnVsZXNfY29uZmlncyB1cGRhdGU6cnVsZXNfY29uZmlncyBkZWxldGU6cnVsZXNfY29uZmlncyByZWFkOmVtYWlsX3Byb3ZpZGVyIHVwZGF0ZTplbWFpbF9wcm92aWRlciBkZWxldGU6ZW1haWxfcHJvdmlkZXIgY3JlYXRlOmVtYWlsX3Byb3ZpZGVyIGJsYWNrbGlzdDp0b2tlbnMgcmVhZDpzdGF0cyByZWFkOnRlbmFudF9zZXR0aW5ncyB1cGRhdGU6dGVuYW50X3NldHRpbmdzIHJlYWQ6bG9ncyByZWFkOnNoaWVsZHMgY3JlYXRlOnNoaWVsZHMgZGVsZXRlOnNoaWVsZHMgdXBkYXRlOnRyaWdnZXJzIHJlYWQ6dHJpZ2dlcnMgcmVhZDpncmFudHMgZGVsZXRlOmdyYW50cyByZWFkOmd1YXJkaWFuX2ZhY3RvcnMgdXBkYXRlOmd1YXJkaWFuX2ZhY3RvcnMgcmVhZDpndWFyZGlhbl9lbnJvbGxtZW50cyBkZWxldGU6Z3VhcmRpYW5fZW5yb2xsbWVudHMgY3JlYXRlOmd1YXJkaWFuX2Vucm9sbG1lbnRfdGlja2V0cyByZWFkOnVzZXJfaWRwX3Rva2VucyBjcmVhdGU6cGFzc3dvcmRzX2NoZWNraW5nX2pvYiBkZWxldGU6cGFzc3dvcmRzX2NoZWNraW5nX2pvYiByZWFkOmN1c3RvbV9kb21haW5zIGRlbGV0ZTpjdXN0b21fZG9tYWlucyBjcmVhdGU6Y3VzdG9tX2RvbWFpbnMgcmVhZDplbWFpbF90ZW1wbGF0ZXMgY3JlYXRlOmVtYWlsX3RlbXBsYXRlcyB1cGRhdGU6ZW1haWxfdGVtcGxhdGVzIHJlYWQ6bWZhX3BvbGljaWVzIHVwZGF0ZTptZmFfcG9saWNpZXMgcmVhZDpyb2xlcyBjcmVhdGU6cm9sZXMgZGVsZXRlOnJvbGVzIHVwZGF0ZTpyb2xlcyIsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyJ9.FAfjRuma_3eEdiLLbPyEoPSVBpdCcz8LTMUXh2hNC_7tADPiaNmRCRLHPzAO8CBaloQ3v4vQPifZxKhqFDPfzRcihmSMgAPL_ucSDJeoQu-Uvpb1UfN-dzIyWEIF8xyTk8h_jas1SV-JDbAmTvkMrzoP9RDbb1yc3TnAK1j_WuO1dFeNGTR8hXupfoFmIB39kvQNKiXVs6fO90Mpymmx3A84UAW8Ni0VkuqeWwaCanPeYj7C867yWaXNW6pG8xphXdlRDHEVebPLXn0l-uXGU6btV7ecVYeM6tCBerOCODeRqkPRJCPI85mcZGqSwA75FZlliD55JTArI6Ne-SyIEQ'
+          auth0_token: ''
 
       }
+
+      
+
+
       componentDidMount() {
-           this.getUsers();
+          if (!this.state.auth0_token) {
+               console.log('obteniendo el token');
+               this.getAccessToken();
+          }else { 
+               console.log('solo busca usuarios');
+               this.getUsers();
+          }
+      }
+
+      getAccessToken = () => {
+          const tokenRequest = {
+               grant_type: 'client_credentials',
+               client_id: 'M7p4ae2yWH7SymwbUYGq2UuweVjzXNOG',
+               client_secret: 'TOSmk-oLa-JdSmP354_IBaSVhe3l7EFAGeCNaP5hE3rhLf_iTOt-dF5VqzfBWagq',
+               audience: 'https://masmovil.eu.auth0.com/api/v2/'
+          }
+
+          axios.post(`https://${this.state.auth0_domain}/oauth/token`, tokenRequest,
+           {headers: {}
+           }).then(res => {
+                console.log(res);
+                if (res.status === 200) {
+
+                    this.setState({
+                         auth0_token: res.data.access_token
+                   });
+                   this.getUsers();
+                   
+                }
+          }).catch(error => {
+               console.log(error);
+          })
+
       }
 
       getUsers = () => {
@@ -121,11 +168,11 @@ class Router extends Component {
           return ( 
                <BrowserRouter>
                     <div className="container">
-                         <div className="row justify-content-center2">
+                         {/* <div className="row justify-content-center2"> */}
                               <Header 
                                    getUsers = {this.getUsers}
                               />
-                              <Navbar/>
+                              <Navbar auth={auth} />
                               <Switch>
                                    <Route exact path="/" render={ () => {
                                         return(
@@ -162,8 +209,12 @@ class Router extends Component {
                                             )
                                     }}
                                     />
+                                   <Route path="/callback" render={(props) => {
+                                        handleAuthentication(props);
+                                        return <Callback {...props} /> 
+                                   }}/>
                               </Switch>
-                         </div>
+                         {/* </div> */}
                     </div>
                </BrowserRouter>
            );

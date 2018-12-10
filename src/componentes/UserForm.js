@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import swal from 'sweetalert2';
+import axios from 'axios';
 
 class UserForm extends Component {
     usernameRef = React.createRef();
@@ -8,6 +10,42 @@ class UserForm extends Component {
     apellido2Ref = React.createRef();
     emailRef = React.createRef();
 
+
+    launchCreateUser = (user) => {
+        console.log(`creando el usuario ${user.name}`)
+        console.log(user)
+        axios.post(`https://${this.state.auth0_domain}/api/v2/users`, user,
+         {headers: {
+             "Authorization" : `Bearer ${this.state.auth0_token}`
+           }
+         }).then(res => {
+              console.log(res);
+              if (res.status === 201) {
+                  const users = [...this.state.users,res];
+      
+                  this.setState({
+                      users
+                 })
+      
+                 swal(
+                       'Usuario Creado',
+                       'Se creo correctamente',
+                       'success'
+                   ).then(function(){
+                       window.location.href = "/";
+                   });
+      
+              }
+        }).catch(error => {
+             swal({
+                  type: 'error',
+                  title: error.response.data.error,
+                  text: error.response.data.message 
+                  // footer: '<a href>Why do I have this issue?</a>'
+                  });
+      
+        })
+      }
 
     createUser = (e) => {
         e.preventDefault();
@@ -32,14 +70,14 @@ class UserForm extends Component {
         }
 
         // enviar por props o petición de axios
-        this.props.createUser(user);
+        this.launchCreateUser(user);
      
     }
 
     render() {
         return (
             <form onSubmit={this.createUser} className="col-8">
-                <legend className="text-center">Crear Nuevo Post</legend>
+                <legend className="text-center">Nuevo usuario</legend>
                 <div className="form-group">
                     <label>Username:</label>
                     <input type="text" ref={this.usernameRef} className="form-control" placeholder="Username"/>

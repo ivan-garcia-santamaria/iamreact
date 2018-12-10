@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import Router from './componentes/Router';
+import Routers from './componentes/Routers';
 
 class App extends Component {
   render() {
     return (
-      <Router />
+      <Routers />
     );
   }
 }

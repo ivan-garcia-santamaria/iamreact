@@ -4,7 +4,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 Hay que instalar las dependencias de:
 
-### `npm install --save-dev axios react-router-dom sweetalert2`
+### `npm install --save-dev axios react-router-dom sweetalert2 jwt-decode`
+
+Dependencias necesarias para Auth0
+### `npm install --save auth0-js history jwt-decode`
 
 ## Available Scripts
 
@@ -43,8 +46,27 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
+## Servidor de Express
+
+Para crear un servidor Express para hacer pruebas hay que hacer...
+#### mkdir servidor
+#### cd servidor
+#### npm init
+
+### Depedencias de proyecto
+
+#### npm install --save body-parser cors express express-jwt express-jwt-authz jwks-rsa nodemon
+
+### Depedencias de desarrollo
+
+#### npm install --save-dev babel-cli babel-preset-env babel-preset-stage-0
+
+Hay que instalar las dependencias de:
+
+
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+

@@ -13,7 +13,8 @@ class ListUsers extends Component {
                         key = {user}
                         user = {this.props.users[user]}
                         delUser = {this.props.delUser}
-                   />
+                        auth= {this.props.auth}
+                        />
                 )
 
                 )}
