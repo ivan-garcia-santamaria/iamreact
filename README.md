@@ -7,7 +7,7 @@ Hay que instalar las dependencias de:
 ### `npm install --save-dev axios react-router-dom sweetalert2 jwt-decode`
 
 Dependencias necesarias para Auth0
-### `npm install --save auth0-js history jwt-decode`
+### `npm install --save auth0-js history jwt-decode reactjs-popup`
 
 ## Available Scripts
 

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Popup from "reactjs-popup";
 import {Link} from 'react-router-dom';
 import './Navbar.css';
 
@@ -46,7 +47,7 @@ class Navbar extends Component {
           let resultado;
     
           if( isAuthenticated() ) {       
-               
+  
               resultado = <div> {this.state.profile.name} <div className="contenedor-boton"><a className="boton" onClick={this.cerrarSesion}>Logout</a></div></div>
           } else {
                resultado = <div className="contenedor-boton"><a className="boton" onClick={this.iniciarSesion}>Login</a></div>
@@ -56,6 +57,9 @@ class Navbar extends Component {
                <nav className="navegacion">
                     <Link to={'/users/'}>Usuarios</Link>
                     {resultado}
+                    <Popup trigger={<span> Trigger</span>} position="right center">
+                      <div>Popup content here !!</div>
+                    </Popup>
                </nav>
           );
      }
