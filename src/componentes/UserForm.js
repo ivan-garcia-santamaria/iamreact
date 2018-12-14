@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import swal from 'sweetalert2';
 import axios from 'axios';
+import Select from 'react-select';
 
 class UserForm extends Component {
     usernameRef = React.createRef();
@@ -9,7 +10,6 @@ class UserForm extends Component {
     apellido1Ref = React.createRef();
     apellido2Ref = React.createRef();
     emailRef = React.createRef();
-
 
     launchCreateUser = (user) => {
         console.log(`creando el usuario ${user.name}`)
@@ -75,7 +75,15 @@ class UserForm extends Component {
     }
 
     render() {
-        return (
+        const colourOptions = [
+            { value: 'chocolate', label: 'Chocolate' },
+            { value: 'strawberry', label: 'Strawberry' },
+            { value: 'vanilla', label: 'Vanilla' },
+            { value: 'vanilla2', label: 'Vanilla2' },
+            { value: 'vanilla3', label: 'Vanilla3' }
+          ];
+
+          return (
             <form onSubmit={this.createUser} className="col-8">
                 <legend className="text-center">Nuevo usuario</legend>
                 <div className="form-group">
@@ -102,6 +110,18 @@ class UserForm extends Component {
                 <div className="form-group">
                     <label>Email:</label>
                     <input type="text" ref={this.emailRef} className="form-control" placeholder="Email"/>
+                </div>
+                <hr/>
+                <div className="form-group">
+                    <label>Grupos:</label>
+                <Select
+                    defaultValue={[colourOptions[2], colourOptions[3]]}
+                    isMulti
+                    name="colors"
+                    options={colourOptions}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                />
                 </div>
                 <button type="submit" className="btn btn-primary">Crear</button>
             </form>
