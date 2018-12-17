@@ -4,6 +4,36 @@ import axios from 'axios';
 import Select from 'react-select';
 
 class UserForm extends Component {
+
+    state = { 
+        groups: [],
+        roles: []
+    }
+
+    componentDidMount() {
+        this.getGroups();
+    }
+
+    getGroups = () => {
+        console.log("buscando grupos");
+        axios.get(`https://vertx.lab.ovid-project.com/iam/v1/groups/`,
+         {headers: {
+           }
+         }).then(res => {
+            var arr = [];
+            for (var key in res.data) {
+                const opcion = {
+                   value: res.data[key].id,
+                   label: res.data[key].name
+                }
+                arr.push(opcion);
+            }
+            this.setState({
+                groups: arr
+            })
+         })
+   }
+
     usernameRef = React.createRef();
     passwordRef = React.createRef();
     nombreRef = React.createRef();
@@ -75,13 +105,13 @@ class UserForm extends Component {
     }
 
     render() {
-        const colourOptions = [
-            { value: 'chocolate', label: 'Chocolate' },
-            { value: 'strawberry', label: 'Strawberry' },
-            { value: 'vanilla', label: 'Vanilla' },
-            { value: 'vanilla2', label: 'Vanilla2' },
-            { value: 'vanilla3', label: 'Vanilla3' }
-          ];
+        // const colourOptions = [
+        //     { value: 'chocolate', label: 'Chocolate' },
+        //     { value: 'strawberry', label: 'Strawberry' },
+        //     { value: 'vanilla', label: 'Vanilla' },
+        //     { value: 'vanilla2', label: 'Vanilla2' },
+        //     { value: 'vanilla3', label: 'Vanilla3' }
+        //   ];
 
           return (
             <form onSubmit={this.createUser} className="col-8">
@@ -115,10 +145,10 @@ class UserForm extends Component {
                 <div className="form-group">
                     <label>Grupos:</label>
                 <Select
-                    defaultValue={[colourOptions[2], colourOptions[3]]}
+                    // defaultValue={[colourOptions[2], colourOptions[3]]}
                     isMulti
                     name="colors"
-                    options={colourOptions}
+                    options={this.state.groups}
                     className="basic-multi-select"
                     classNamePrefix="select"
                 />

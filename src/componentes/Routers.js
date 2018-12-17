@@ -3,9 +3,13 @@ import { Redirect, Route, Router } from 'react-router-dom';
 import axios from 'axios';
 import Header from './Header';
 import Navbar from './Navbar';
-import UsersSection from './UsersSection';
-import SingleUser from './SingleUser';
-import UserForm from './UserForm';
+import GroupsSection from './groups/GroupsSection';
+import ProfilesSection from './profiles/ProfilesSection';
+import PermissionsSection from './permissions/PermissionsSection';
+import RolesSection from './roles/RolesSection';
+import UsersSection from './users/UsersSection';
+import SingleUser from './users/SingleUser';
+import UserForm from './users/UserForm';
 import swal from 'sweetalert2';
 import Auth from '../Auth/Auth';
 import history from '../history';
@@ -187,6 +191,7 @@ class Routers extends Component {
                     ) : (
                         <UsersSection 
                         auth={auth} {...props}
+                        delUser={this.delUser}
                         users={this.state.users}
                         />
                      )
@@ -223,7 +228,59 @@ class Routers extends Component {
                          )
                  }}
                  />
-                 
+
+                 {/* grupos */}
+
+                 <Route exact path="/groups/" render={ (props) => (
+                    !auth.isAuthenticated() ? (
+                        <Redirect to="/home"/>
+                    ) : (
+                        <GroupsSection 
+                        auth={auth} {...props}
+                        />
+                     )
+                 )}
+                 />
+
+                 {/* perfiles */}
+
+                 <Route exact path="/profiles/" render={ (props) => (
+                    !auth.isAuthenticated() ? (
+                        <Redirect to="/home"/>
+                    ) : (
+                        <ProfilesSection 
+                        auth={auth} {...props}
+                        />
+                     )
+                 )}
+                 />
+
+                 {/* permisos */}
+
+                 <Route exact path="/permissions/" render={ (props) => (
+                    !auth.isAuthenticated() ? (
+                        <Redirect to="/home"/>
+                    ) : (
+                        <PermissionsSection 
+                            auth={auth} {...props}
+                        />
+                     )
+                 )}
+                 />
+
+                 {/* roles */}
+
+                 <Route exact path="/roles/" render={ (props) => (
+                    !auth.isAuthenticated() ? (
+                        <Redirect to="/home"/>
+                    ) : (
+                        <RolesSection 
+                            auth={auth} {...props}
+                        />
+                     )
+                 )}
+                 />
+
                  <Route path="/callback" render={(props) => {
                    handleAuthentication(props);
                    return <Callback {...props} /> 

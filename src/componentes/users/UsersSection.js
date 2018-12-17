@@ -11,7 +11,7 @@ class UsersSection extends Component {
                 <ListUsers 
                     auth= {this.props.auth}
                     users= {this.props.users}
-                    delUser = {this.delUser}
+                    delUser = {this.props.delUser}
                 />
             </div>
         );
