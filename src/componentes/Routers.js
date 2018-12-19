@@ -16,6 +16,7 @@ import history from '../history';
 import Callback from './Callback/Callback';
 import Home from './Home';
 
+
 const auth = new Auth();
 
 const handleAuthentication = ({location}) => {
@@ -134,6 +135,7 @@ class Routers extends Component {
      }
 
      createUser = (user) => {
+
           console.log(`creando el usuario ${user.name}`)
           console.log(user)
           axios.post(`https://${this.state.auth0_domain}/api/v2/users`, user,
@@ -149,12 +151,14 @@ class Routers extends Component {
                         users
                    })
 
+                   
                    swal(
                          'Usuario Creado',
                          'Se creo correctamente',
                          'success'
                      ).then(function(){
-                         window.location.href = "/";
+                        history.push('/users')
+                        //  window.location.href = "/users/";
                      });
 
                 }
@@ -168,6 +172,7 @@ class Routers extends Component {
 
           })
      }
+     
 
      render() { 
           return ( 
@@ -193,6 +198,7 @@ class Routers extends Component {
                         auth={auth} {...props}
                         delUser={this.delUser}
                         users={this.state.users}
+                        
                         />
                      )
                  )}
@@ -224,6 +230,8 @@ class Routers extends Component {
                          return(
                              <UserForm 
                                auth={auth} {...props}
+                               auth0_token={this.state.auth0_token}
+                               createUser={this.createUser}
                              />
                          )
                  }}

@@ -1,0 +1,1 @@
+export const AUTH0_DOMAIN = 'masmovil.eu.auth0.com';

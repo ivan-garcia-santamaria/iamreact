@@ -1,19 +1,8 @@
 import React, { Component } from 'react';
-import Popup from "reactjs-popup";
 import {Link} from 'react-router-dom';
 import './Navbar.css';
 import power from '../on-off-power-button.png';
 
-
-const Card = ({ title }) => (
-     <div className="card">
-       <div className="header">{title} position </div>
-       <div className="content">
-         Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit autem
-         sapiente labore architecto exercitationem optio quod dolor cupiditate
-       </div>
-     </div>
-   )
 
 class Navbar extends Component {
 

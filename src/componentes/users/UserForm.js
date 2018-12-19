@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import swal from 'sweetalert2';
 import axios from 'axios';
 import Select from 'react-select';
+import { AUTH0_DOMAIN } from '../../constants';
+
 
 class UserForm extends Component {
 
@@ -41,42 +43,6 @@ class UserForm extends Component {
     apellido2Ref = React.createRef();
     emailRef = React.createRef();
 
-    launchCreateUser = (user) => {
-        console.log(`creando el usuario ${user.name}`)
-        console.log(user)
-        axios.post(`https://${this.state.auth0_domain}/api/v2/users`, user,
-         {headers: {
-             "Authorization" : `Bearer ${this.state.auth0_token}`
-           }
-         }).then(res => {
-              console.log(res);
-              if (res.status === 201) {
-                  const users = [...this.state.users,res];
-      
-                  this.setState({
-                      users
-                 })
-      
-                 swal(
-                       'Usuario Creado',
-                       'Se creo correctamente',
-                       'success'
-                   ).then(function(){
-                       window.location.href = "/";
-                   });
-      
-              }
-        }).catch(error => {
-             swal({
-                  type: 'error',
-                  title: error.response.data.error,
-                  text: error.response.data.message 
-                  // footer: '<a href>Why do I have this issue?</a>'
-                  });
-      
-        })
-      }
-
     createUser = (e) => {
         e.preventDefault();
 
@@ -100,7 +66,7 @@ class UserForm extends Component {
         }
 
         // enviar por props o petición de axios
-        this.launchCreateUser(user);
+        this.props.createUser(user);
      
     }
 
