@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import ListGroups from './ListGroups';
 import {Link} from 'react-router-dom';
+import { URL_GROUPS } from '../../constants';
 
 class GroupsSection extends Component {
     state = { 
@@ -15,7 +16,7 @@ class GroupsSection extends Component {
 
     getGroups = () => {
         console.log("buscando grupos");
-        axios.get(`https://vertx.lab.ovid-project.com/iam/v1/groups/`,
+        axios.get(`${URL_GROUPS}`,
          {headers: {
            }
          }).then(res => {

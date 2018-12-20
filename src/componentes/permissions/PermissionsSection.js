@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import ListPermissions from './ListPermissions';
 import {Link} from 'react-router-dom';
+import { URL_PERMISSIONS } from '../../constants';
 
 class PermissionsSection extends Component {
     state = { 
@@ -15,7 +16,7 @@ class PermissionsSection extends Component {
 
     getPermissions = () => {
         console.log("buscando Permissions");
-        axios.get(`https://vertx.lab.ovid-project.com/iam/v1/permissions/`,
+        axios.get(`${URL_PERMISSIONS}`,
          {headers: {
            }
          }).then(res => {

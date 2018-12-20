@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
+import icon_delete from '../../iconfinder_DeleteRed_34218.png';
 
 class Group extends Component {
 
@@ -7,12 +8,11 @@ class Group extends Component {
         const {name,id,description} =this.props.group;
         return (
             <tr>
-                <td>{id}</td>
+                <td><Link to={`/groups/${id}`}>{id}</Link></td>
                 <td>{name}</td>
                 <td>{description}</td>
                 <td>
-                    <Link to={`/groups/${id}`} className="btn btn-primary"> Ver</Link>
-                    <button onClick={ () => this.props.delUser(id) } type="button" className="btn btn-danger">Borrar</button>
+                    <img onClick={ () => this.props.delUser(id) } src={icon_delete} alt="Borrar" />
                 </td>
             </tr>
         );

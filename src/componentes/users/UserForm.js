@@ -1,40 +1,73 @@
 import React, { Component } from 'react';
-import swal from 'sweetalert2';
 import axios from 'axios';
 import Select from 'react-select';
-import { AUTH0_DOMAIN } from '../../constants';
+import { URL_GROUPS,URL_ROLES, URL_BRANDS } from '../../constants';
 
 
 class UserForm extends Component {
 
     state = { 
         groups: [],
-        roles: []
+        roles: [],
+        brands: []
     }
 
     componentDidMount() {
         this.getGroups();
+        this.getRoles();
+        this.getBrands();
+    }
+
+    translateResponse = (res) => {
+        var arr = [];
+        for (var key in res.data) {
+            const opcion = {
+               value: res.data[key].id,
+               label: res.data[key].name
+            }
+            arr.push(opcion);
+        }
+        return arr;
     }
 
     getGroups = () => {
         console.log("buscando grupos");
-        axios.get(`https://vertx.lab.ovid-project.com/iam/v1/groups/`,
+        axios.get(`${URL_GROUPS}`,
          {headers: {
            }
          }).then(res => {
-            var arr = [];
-            for (var key in res.data) {
-                const opcion = {
-                   value: res.data[key].id,
-                   label: res.data[key].name
-                }
-                arr.push(opcion);
-            }
+            var arr=this.translateResponse(res);
             this.setState({
                 groups: arr
             })
          })
    }
+
+   getRoles = () => {
+    console.log("buscando roles");
+    axios.get(`${URL_ROLES}`,
+     {headers: {
+       }
+     }).then(res => {
+        var arr=this.translateResponse(res);
+        this.setState({
+            roles: arr
+        })
+     })
+    }
+
+    getBrands = () => {
+        console.log("buscando brands");
+        axios.get(`${URL_BRANDS}`,
+         {headers: {
+           }
+         }).then(res => {
+            var arr=this.translateResponse(res);
+            this.setState({
+                brands: arr
+            })
+         })
+    }
 
     usernameRef = React.createRef();
     passwordRef = React.createRef();
@@ -113,8 +146,30 @@ class UserForm extends Component {
                 <Select
                     // defaultValue={[colourOptions[2], colourOptions[3]]}
                     isMulti
-                    name="colors"
+                    name="groups"
                     options={this.state.groups}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                />
+                </div>
+                <div className="form-group">
+                    <label>Roles:</label>
+                <Select
+                    // defaultValue={[colourOptions[2], colourOptions[3]]}
+                    isMulti
+                    name="roles"
+                    options={this.state.roles}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                />
+                </div>
+                <div className="form-group">
+                    <label>Marca:</label>
+                <Select
+                    // defaultValue={[colourOptions[2], colourOptions[3]]}
+                    isMulti
+                    name="roles"
+                    options={this.state.brands}
                     className="basic-multi-select"
                     classNamePrefix="select"
                 />

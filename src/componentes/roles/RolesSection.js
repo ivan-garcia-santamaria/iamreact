@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import ListRoles from './ListRoles';
 import {Link} from 'react-router-dom';
+import { URL_ROLES } from '../../constants';
 
 class RolesSection extends Component {
     state = { 
@@ -15,7 +16,7 @@ class RolesSection extends Component {
 
     getRoles = () => {
         console.log("buscando roles");
-        axios.get(`https://vertx.lab.ovid-project.com/iam/v1/roles/`,
+        axios.get(`${URL_ROLES}`,
          {headers: {
            }
          }).then(res => {

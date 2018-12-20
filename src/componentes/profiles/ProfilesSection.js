@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import ListProfiles from './ListProfiles';
 import {Link} from 'react-router-dom';
+import { URL_PROFILES } from '../../constants';
 
 class ProfilesSection extends Component {
     state = { 
@@ -15,7 +16,7 @@ class ProfilesSection extends Component {
 
     getProfiles = () => {
         console.log("buscando profiles");
-        axios.get(`https://vertx.lab.ovid-project.com/iam/v1/profiles/`,
+        axios.get(`${URL_PROFILES}`,
          {headers: {
            }
          }).then(res => {

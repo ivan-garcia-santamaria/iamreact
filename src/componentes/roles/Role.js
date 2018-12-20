@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
+import icon_delete from '../../iconfinder_DeleteRed_34218.png';
 
 class Role extends Component {
 
@@ -7,13 +8,12 @@ class Role extends Component {
         const {id,idPermission,idProfile,description} =this.props.roles;
         return (
             <tr>
-                <td>{id}</td>
+                <td><Link to={`/roles/${id}`}>{id}</Link></td>
                 <td>{idPermission}</td>
                 <td>{idProfile}</td>
                 <td>{description}</td>
                 <td>
-                    <Link to={`/roles/${id}`} className="btn btn-primary"> Ver</Link>
-                    <button onClick={ () => this.props.delUser(id) } type="button" className="btn btn-danger">Borrar</button>
+                    <img onClick={ () => this.props.delUser(id) } src={icon_delete} alt="Borrar" />
                 </td>
             </tr>
         );

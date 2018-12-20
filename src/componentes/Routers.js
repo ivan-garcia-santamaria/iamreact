@@ -145,8 +145,9 @@ class Routers extends Component {
            }).then(res => {
                 console.log(res);
                 if (res.status === 201) {
-                    const users = [...this.state.users,res];
 
+                    const users = [...this.state.users,res.data];
+                    // const users = this.state.users.concat([res])
                     this.setState({
                         users
                    })
