@@ -10,7 +10,7 @@ export default class Auth {
   userProfile;
   scopes;
   authorization;
-  requestedScopes = 'openid profile read:messages write:messages';
+  requestedScopes = 'openid profile email';
 
   auth0 = new auth0.WebAuth({
     domain: AUTH_CONFIG.domain,
@@ -62,6 +62,7 @@ export default class Auth {
   }
 
   setSession(authResult) {
+    console.log(authResult);
     // Set isLoggedIn flag in localStorage
     localStorage.setItem('isLoggedIn', 'true');
 
@@ -70,10 +71,11 @@ export default class Auth {
     this.accessToken = authResult.accessToken;
     this.idToken = authResult.idToken;
     
-    var decodedIToken = jwt_decode(authResult.idToken);
-    this.authorization = decodedIToken['http://iam.masmovil.com/authorization'];
+    // var decodedIToken = jwt_decode(authResult.idToken);
+    // this.authorization = decodedIToken['http://iam.masmovil.com/authorization'];
+    this.authorization = authResult.idTokenPayload['http://iam.masmovil.com/authorization'];
 
-    console.log(this.accessToken);
+    console.log(authResult.idTokenPayload['http://iam.masmovil.com/authorization']);
 
     this.expiresAt = expiresAt;
 

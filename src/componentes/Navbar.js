@@ -38,21 +38,12 @@ class Navbar extends Component {
                     this.setState({ profile: userProfile });
                }
           }else{
-               console.log("no pasa");
+               console.log("no esta autenticado");
           }
         }
 
         render() {
           const { isAuthenticated } = this.props.auth;
-
-          let resultado;
-    
-          if( isAuthenticated() ) {       
-               
-              resultado = <div className="contenedor-boton"><a className="boton" onClick={this.cerrarSesion}>{this.state.profile.name} <img src={power} alt="Logout" /></a></div>
-          } else {
-               resultado = <div className="contenedor-boton"><a className="boton" onClick={this.iniciarSesion}>Login</a></div>
-          }
 
           return (
                <nav className="navegacion">
@@ -61,7 +52,12 @@ class Navbar extends Component {
                     <Link to={'/profiles/'}>Perfiles</Link>
                     <Link to={'/permissions/'}>Permisos</Link>
                     <Link to={'/roles/'}>Roles</Link>
-                    {resultado}
+                    { isAuthenticated() && (
+                         <div className="contenedor-boton"><a className="boton" onClick={this.cerrarSesion}>{this.state.profile.name} <img src={power} alt="Logout" /></a></div>
+                    )}
+                    { !isAuthenticated() && (
+                         <div className="contenedor-boton"><a className="boton" onClick={this.iniciarSesion}>Login</a></div>
+                    )}
                </nav>
           );
      }
