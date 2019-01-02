@@ -1,16 +1,17 @@
 import history from '../history';
 import auth0 from 'auth0-js';
 import { AUTH_CONFIG } from './auth0-variables';
-import jwt_decode from 'jwt-decode';
+// import jwt_decode from 'jwt-decode';
 
 export default class Auth {
   accessToken;
   idToken;
+  idTokenPayload;
   expiresAt;
-  userProfile;
+  // userProfile;
   scopes;
   authorization;
-  requestedScopes = 'openid profile email';
+  requestedScopes = 'openid profile iam:admin email';
 
   auth0 = new auth0.WebAuth({
     domain: AUTH_CONFIG.domain,
@@ -30,7 +31,7 @@ export default class Auth {
     this.getAccessToken = this.getAccessToken.bind(this);
     this.getIdToken = this.getIdToken.bind(this);
     this.renewSession = this.renewSession.bind(this);
-    this.getProfile = this.getProfile.bind(this);
+    // this.getProfile = this.getProfile.bind(this);
   }
 
   login() {
@@ -75,7 +76,9 @@ export default class Auth {
     // this.authorization = decodedIToken['http://iam.masmovil.com/authorization'];
     this.authorization = authResult.idTokenPayload['http://iam.masmovil.com/authorization'];
 
-    console.log(authResult.idTokenPayload['http://iam.masmovil.com/authorization']);
+    console.log(authResult.idTokenPayload);
+    
+    this.idTokenPayload=authResult.idTokenPayload;
 
     this.expiresAt = expiresAt;
 
@@ -98,14 +101,14 @@ export default class Auth {
     });
   }
 
-  getProfile(cb) {
-    this.auth0.client.userInfo(this.accessToken, (err, profile) => {
-      if (profile) {
-        this.userProfile = profile;
-      }
-      cb(err, profile);
-    });
-  }
+  // getProfile(cb) {
+  //   this.auth0.client.userInfo(this.accessToken, (err, profile) => {
+  //     if (profile) {
+  //       this.userProfile = profile;
+  //     }
+  //     cb(err, profile);
+  //   });
+  // }
 
   logout() {
     // Remove tokens and expiry time
@@ -117,7 +120,8 @@ export default class Auth {
     this.scopes = null;
 
     // Remove user profile
-    this.userProfile = null;
+    // this.userProfile = null;
+    this.idTokenPayload = null;
 
     // Remove isLoggedIn flag from localStorage
     localStorage.removeItem('isLoggedIn');

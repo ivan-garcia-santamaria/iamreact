@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Select from 'react-select';
-import { URL_GROUPS,URL_ROLES, URL_BRANDS } from '../../constants';
+import { URL_USERS, URL_GROUPS,URL_ROLES, URL_BRANDS } from '../../constants';
+import swal from 'sweetalert2';
+import history from '../../history';
 
 
 class UserForm extends Component {
@@ -76,7 +78,7 @@ class UserForm extends Component {
     apellido2Ref = React.createRef();
     emailRef = React.createRef();
 
-    createUser = (e) => {
+    createLocalUser = (e) => {
         e.preventDefault();
 
         // leer los refs
@@ -99,9 +101,49 @@ class UserForm extends Component {
         }
 
         // enviar por props o petición de axios
-        this.props.createUser(user);
+        this.createUser(user);
      
     }
+
+    createUser = (user) => {
+
+        console.log(`creando el usuario ${user.name}`)
+        console.log(user)
+        axios.post(`${URL_USERS}`, user,
+         {headers: {
+             "Authorization" : `Bearer ${this.props.auth.getAccessToken()}`
+           }
+         }).then(res => {
+              console.log(res);
+              if (res.status === 201) {
+
+                  const users = [...this.state.users,res.data];
+                  // const users = this.state.users.concat([res])
+                  this.setState({
+                      users
+                 })
+
+                 
+                 swal(
+                       'Usuario Creado',
+                       'Se creo correctamente',
+                       'success'
+                   ).then(function(){
+                      history.push('/users')
+                      //  window.location.href = "/users/";
+                   });
+
+              }
+        }).catch(error => {
+             swal({
+                  type: 'error',
+                  title: error.response.data.error,
+                  text: error.response.data.message 
+                  // footer: '<a href>Why do I have this issue?</a>'
+                  });
+
+        })
+   }
 
     render() {
         // const colourOptions = [
@@ -113,7 +155,7 @@ class UserForm extends Component {
         //   ];
 
           return (
-            <form onSubmit={this.createUser} className="col-8">
+            <form onSubmit={this.createLocalUser} className="col-8">
                 <legend className="text-center">Nuevo usuario</legend>
                 <div className="form-group">
                     <label>Username:</label>

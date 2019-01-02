@@ -6,9 +6,6 @@ import power from '../on-off-power-button.png';
 
 class Navbar extends Component {
 
-     state = {
-          profile: {}
-     }
 
      iniciarSesion = () => {
           this.props.auth.login();
@@ -20,25 +17,13 @@ class Navbar extends Component {
 
 
      componentWillReceiveProps() {
+          
           const { isAuthenticated } = this.props.auth;
-          if( isAuthenticated() ) {
-               this.setState({ profile: {} });
-
-               const { userProfile, getProfile } = this.props.auth;
-     
-               if (!userProfile) {
-                    getProfile((err, profile) => {
-                         console.log(profile);
-                         console.log(this.props.auth.authorization);
-                         console.log(this.props.auth);
-                    this.setState({ profile });
-                    });
-               } else {
-                    console.log(userProfile);
-                    this.setState({ profile: userProfile });
-               }
-          }else{
+          if( ! isAuthenticated() ) {
                console.log("no esta autenticado");
+          }else{
+               console.log("esta autenticado");
+
           }
         }
 
@@ -53,10 +38,10 @@ class Navbar extends Component {
                     <Link to={'/permissions/'}>Permisos</Link>
                     <Link to={'/roles/'}>Roles</Link>
                     { isAuthenticated() && (
-                         <div className="contenedor-boton"><a className="boton" onClick={this.cerrarSesion}>{this.state.profile.name} <img src={power} alt="Logout" /></a></div>
+                         <div className="contenedor-boton"><div className="boton" onClick={this.cerrarSesion}>{this.props.auth.idTokenPayload.name} <img src={power} alt="Logout" /></div></div>
                     )}
                     { !isAuthenticated() && (
-                         <div className="contenedor-boton"><a className="boton" onClick={this.iniciarSesion}>Login</a></div>
+                         <div className="contenedor-boton"><div className="boton" onClick={this.iniciarSesion}>Login</div></div>
                     )}
                </nav>
           );
