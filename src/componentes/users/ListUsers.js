@@ -13,6 +13,7 @@ class ListUsers extends Component {
                         key = {user}
                         user = {this.props.users[user]}
                         delUser = {this.props.delUser}
+                        unblockUser = {this.props.unblockUser}
                         auth= {this.props.auth}
                         />
                 )
@@ -27,6 +28,7 @@ class ListUsers extends Component {
             <table className="table">
                 <thead>
                     <tr> 
+                        <th scope="col">&nbsp;</th>
                         <th scope="col">id</th>
                         <th scope="col">Name</th>
                         <th scope="col">Username</th>

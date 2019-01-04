@@ -26,13 +26,17 @@ const handleAuthentication = ({location}) => {
 class Routers extends Component {
      state = { 
           auth0_domain: 'masmovil.eu.auth0.com',
-          auth0_token: ''
-
+          auth0_token: '',
+          users: []
       }
 
+      updateStateUsers = (users) => {
+          console.log(`updateStateUsers`)
+          this.setState({
+              users
+          })
 
- 
-     
+      }
 
      render() { 
           return ( 
@@ -55,6 +59,8 @@ class Routers extends Component {
                         <Redirect to="/home"/>
                     ) : (
                         <UsersSection 
+                        users={this.state.users}
+                        updateStateUsers={this.updateStateUsers}
                         auth={auth} {...props}                        
                         />
                      )
@@ -86,6 +92,8 @@ class Routers extends Component {
                  <Route exact path="/createUser" render={ (props) => {
                          return(
                              <UserForm 
+                               users={this.state.users}
+                               updateStateUsers={this.updateStateUsers}
                                auth={auth} {...props}
                              />
                          )
