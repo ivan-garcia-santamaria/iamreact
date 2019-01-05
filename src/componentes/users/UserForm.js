@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Select from 'react-select';
-import { URL_USERS, URL_GROUPS,URL_ROLES, URL_BRANDS, URL_APPS, URL_PERMISSIONS } from '../../constants';
+import { URL_USERS } from '../../constants';
 import swal from 'sweetalert2';
 import history from '../../history';
+import MasterTables from '../masterTables/MasterTables';
+import Errors from '../errors/Errors';
 
+const masterTables = new MasterTables();
+const errors = new Errors();
 
 class UserForm extends Component {
 
@@ -12,129 +16,38 @@ class UserForm extends Component {
         apps: [],
         groups: [],
         roles: [],
-        permissions: [],
         brands: [],
         groupsSelected: [],
         rolesSelected: [],
-        permissionsSelected: [],
-        brandsSelected: [],
-        error: null
+        brandsSelected: []
     }
 
     componentDidMount() {
-        this.getApps();
-        this.getGroups();
-        this.getRoles();
-        this.getPermissions();
-        this.getBrands();
-    }
-
-    translateResponse = (resArr) => {
-        console.log(resArr);
-        var arr = [];
-        for (var key in resArr) {
-            const opcion = {
-                value: resArr[key]._id,
-                label: resArr[key].name
-            }
-            arr.push(opcion);
-        }
-        return arr;
-    }
-
-    translateResponseApps = (res) => {
-        console.log(res);
-        var arr = [];
-        for (var key in res.data) {
-            const opcion = {
-                value: res.data[key].client_id,
-                label: res.data[key].name
-            }
-            arr.push(opcion);
-        }
-        return arr;
-    }
-
-    translateResponseBrands = (res) => {
-        console.log(res);
-        var arr = [];
-        for (var key in res.data) {
-            const opcion = {
-                value: res.data[key].id,
-                label: res.data[key].name
-            }
-            arr.push(opcion);
-        }
-        return arr;
-    }
-
-    getApps = () => {
-        console.log("buscando apPs");
-        axios.get(`${URL_APPS}`, {
-            headers: {
-                "Authorization": `Bearer ${this.props.auth.getAccessToken()}`
-            }
-
-        }).then(res => {
-            var arr = this.translateResponseApps(res);
+        masterTables.getApps(this.props.auth.getAccessToken()).then(res => {
             this.setState({
-                apps: arr
+                apps: masterTables.translateResponseApps(res)
             })
-        })
-    }
-
-    getGroups = () => {
-        console.log("buscando grupos");
-        axios.get(`${URL_GROUPS}`, {
-            headers: {
-                "Authorization": `Bearer ${this.props.auth.getAccessToken()}`
-            }
-        }).then(res => {
-            var arr = this.translateResponse(res.data.groups);
+        });
+        masterTables.getGroups(this.props.auth.getAccessToken()).then(res => {
+            console.log(res);
             this.setState({
-                groups: arr
+                groups: masterTables.translateResponse(res.data.groups)
             })
-        })
-    }
+        });
 
-    getRoles = () => {
-        console.log("buscando roles");
-        axios.get(`${URL_ROLES}`, {
-            headers: {
-                "Authorization": `Bearer ${this.props.auth.getAccessToken()}`
-            }
-        }).then(res => {
-            var arr = this.translateResponse(res.data.roles);
+        masterTables.getRoles(this.props.auth.getAccessToken()).then(res => {
+            console.log(res);
             this.setState({
-                roles: arr
+                roles: masterTables.translateResponse(res.data.roles)
             })
-        })
-    }
+        });
 
-    getPermissions = () => {
-        console.log("buscando permissions");
-        axios.get(`${URL_PERMISSIONS}`, {
-            headers: {
-                "Authorization": `Bearer ${this.props.auth.getAccessToken()}`
-            }
-        }).then(res => {
-            var arr = this.translateResponse(res.data.permissions);
+        masterTables.getBrands(this.props.auth.getAccessToken()).then(res => {
+            console.log(res);
             this.setState({
-                permissions: arr
+                brands: masterTables.translateResponseBrands(res)
             })
-        })
-    }
-
-    getBrands = () => {
-        console.log("buscando brands");
-        axios.get(`${URL_BRANDS}`, {
-            headers: {}
-        }).then(res => {
-            var arr = this.translateResponseBrands(res);
-            this.setState({
-                brands: arr
-            })
-        })
+        });
     }
 
     usernameRef = React.createRef();
@@ -143,6 +56,7 @@ class UserForm extends Component {
     apellido1Ref = React.createRef();
     apellido2Ref = React.createRef();
     emailRef = React.createRef();
+    sfidRef = React.createRef();
 
     createLocalUser = (e) => {
         e.preventDefault();
@@ -159,7 +73,8 @@ class UserForm extends Component {
             verify_email: true,
             blocked: true,
             app_metadata: {
-                brands: this.convertOptionsSimpleArray(this.state.brandsSelected)
+                sfid: this.sfidRef.current.value,
+                brands: masterTables.convertOptionsSimpleArray(this.state.brandsSelected)
             }
         }
 
@@ -168,18 +83,10 @@ class UserForm extends Component {
 
     }
 
-    convertOptionsSimpleArray = (options) => {
-        var arr = [];
-        for (var key in options) {
-            arr.push(options[key].value);
-        }
-        return arr;
-    }
-
     addGroups = (userId) => {
         console.log(`añadiendo los grupos al usuario ${userId}`)
         return axios.patch(`${URL_USERS}/${userId}/groups`,
-            this.convertOptionsSimpleArray(this.state.groupsSelected), {
+            masterTables.convertOptionsSimpleArray(this.state.groupsSelected), {
                 headers: {
                     "Authorization": `Bearer ${this.props.auth.getAccessToken()}`
                 }
@@ -191,16 +98,13 @@ class UserForm extends Component {
             }
         }).catch(error => {
             console.log("capturando error en grupos");
-            this.setState({
-                error
-            });
         });
     }
 
     addRoles = (userId) => {
         console.log(`añadiendo los roles al usuario ${userId}`)
         return axios.patch(`${URL_USERS}/${userId}/roles`,
-            this.convertOptionsSimpleArray(this.state.rolesSelected), {
+            masterTables.convertOptionsSimpleArray(this.state.rolesSelected), {
                 headers: {
                     "Authorization": `Bearer ${this.props.auth.getAccessToken()}`
                 }
@@ -212,9 +116,6 @@ class UserForm extends Component {
             }
         }).catch(error => {
             console.log("capturando error en roles");
-            this.setState({
-                error
-            });
         });
     }
 
@@ -271,62 +172,41 @@ class UserForm extends Component {
 
             }
         }).catch(error => {
-            console.log(error);
-            this.showError(error);
+            errors.showError( error.response.data.error,
+                              error.response.data.message);
 
         })
     }
 
-    showError = (error) => {
-        swal({
-            type: 'error',
-            title: error.response.data.error,
-            text: error.response.data.message
-            // footer: '<a href>Why do I have this issue?</a>'
-        });
-    }
-
     handleChangeGroups = (selectedOption) => {
-        console.log(`Option selected: `, selectedOption);
-        console.log(JSON.stringify(selectedOption));
         this.setState({
             groupsSelected: selectedOption
         });
     }
 
     handleChangeRoles = (selectedOption) => {
-        console.log(`Option selected: `, selectedOption);
         this.setState({
             rolesSelected: selectedOption
         });
     }
 
-    handleChangePermissions = (selectedOption) => {
-        console.log(`Option selected: `, selectedOption);
-        this.setState({
-            permissionsSelected: selectedOption
-        });
-    }
-
     handleChangeBrands = (selectedOption) => {
-        console.log(`Option selected: `, selectedOption);
         this.setState({
             brandsSelected: selectedOption
         });
     }
 
    render() {
-        // const colourOptions = [
-        //     { value: 'chocolate', label: 'Chocolate' },
-        //     { value: 'strawberry', label: 'Strawberry' },
-        //     { value: 'vanilla', label: 'Vanilla' },
-        //     { value: 'vanilla2', label: 'Vanilla2' },
-        //     { value: 'vanilla3', label: 'Vanilla3' }
-        //   ];
 
           return (
-            <form onSubmit={this.createLocalUser} className="col-8">
+            <div className="container">
+
+            <form onSubmit={this.createLocalUser}>
+            <div className="row">
                 <legend className="text-center">Nuevo usuario</legend>
+            </div>
+            <div className="row">
+                    <div className="col-6">
                 <div className="form-group">
                     <label>Username:</label>
                     <input type="text" defaultValue="ivan" ref={this.usernameRef} className="form-control" placeholder="Username"/>
@@ -334,6 +214,10 @@ class UserForm extends Component {
                 <div className="form-group">
                     <label>Password:</label>
                     <input type="text" defaultValue="ivan2018@" ref={this.passwordRef} className="form-control" placeholder="Password"/>
+                </div>
+                <div className="form-group">
+                    <label>SFID:</label>
+                    <input type="text" defaultValue="SFID-BLA-BLA" ref={this.sfidRef} className="form-control" placeholder="Username"/>
                 </div>
                 <hr />
                 <div className="form-group">
@@ -352,7 +236,8 @@ class UserForm extends Component {
                     <label>Email:</label>
                     <input type="text" defaultValue="garcia@gmail.com" ref={this.emailRef} className="form-control" placeholder="Email"/>
                 </div>
-                <hr/>
+                </div>
+                <div className="col-6">
                 <div className="form-group">
                     <label>Grupos:</label>
                 <Select
@@ -378,18 +263,6 @@ class UserForm extends Component {
                 />
                 </div>
                 <div className="form-group">
-                    <label>Permisos:</label>
-                <Select
-                    // defaultValue={[colourOptions[2], colourOptions[3]]}
-                    isMulti
-                    name="permissions"
-                    onChange={this.handleChangePermissions}
-                    options={this.state.permissions}
-                    className="basic-multi-select"
-                    classNamePrefix="select"
-                />
-                </div>
-                <div className="form-group">
                     <label>Marca:</label>
                 <Select
                     // defaultValue={[colourOptions[2], colourOptions[3]]}
@@ -401,8 +274,17 @@ class UserForm extends Component {
                     classNamePrefix="select"
                 />
                 </div>
-                <button type="submit" className="btn btn-primary">Crear</button>
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-4"></div>
+                <div className="col-4">
+                    <button type="submit" className="btn btn-primary">Crear</button>
+                </div>
+                <div className="col-4"></div>
+            </div>
             </form>
+            </div>
         );
     }
 }

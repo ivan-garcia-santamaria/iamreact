@@ -3,6 +3,9 @@ import axios from 'axios';
 import ListRoles from './ListRoles';
 import {Link} from 'react-router-dom';
 import { URL_ROLES } from '../../constants';
+import Errors from '../errors/Errors';
+
+const errors = new Errors();
 
 class RolesSection extends Component {
     state = { 
@@ -16,16 +19,19 @@ class RolesSection extends Component {
 
     getRoles = () => {
         console.log("buscando roles");
-        axios.get(`${URL_ROLES}`,
-         {headers: {
-           }
-         }).then(res => {
-             console.log(res.data);
+        axios.get(`${URL_ROLES}`, {
+            headers: {
+                "Authorization": `Bearer ${this.props.auth.getAccessToken()}`
+            }
+        }).then(res => {
+            console.log(res.data);
             this.setState({
                 roles: res.data
             })
-         })
-   }
+        }).catch(error => {
+            errors.showErrorForbidden();
+        })
+    }
     
       render() {
         return (

@@ -3,7 +3,6 @@ import { Redirect, Route, Router } from 'react-router-dom';
 import Header from './Header';
 import Navbar from './Navbar';
 import GroupsSection from './groups/GroupsSection';
-import ProfilesSection from './profiles/ProfilesSection';
 import PermissionsSection from './permissions/PermissionsSection';
 import RolesSection from './roles/RolesSection';
 import UsersSection from './users/UsersSection';
@@ -46,12 +45,12 @@ class Routers extends Component {
                  
                  <Navbar auth={auth} />
                  <Route path="/home" render={(props) => <Home auth={auth} {...props} />} />
-                 <Route path="/" render={(props) => (
+                 <Route exact path="/" render={(props) => (
                     !auth.isAuthenticated() ? (
                         <Redirect to="/home"/>
                     ) : (
-                        // <Profile auth={auth} {...props} />
-                        <Redirect to="/users"/>
+                        // <Redirect to="/users"/>
+                        <Home auth={auth} {...props} />
                     )
                  )} />
                  <Route exact path="/users/" render={ (props) => (
@@ -107,19 +106,6 @@ class Routers extends Component {
                         <Redirect to="/home"/>
                     ) : (
                         <GroupsSection 
-                        auth={auth} {...props}
-                        />
-                     )
-                 )}
-                 />
-
-                 {/* perfiles */}
-
-                 <Route exact path="/profiles/" render={ (props) => (
-                    !auth.isAuthenticated() ? (
-                        <Redirect to="/home"/>
-                    ) : (
-                        <ProfilesSection 
                         auth={auth} {...props}
                         />
                      )

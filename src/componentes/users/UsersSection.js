@@ -3,36 +3,36 @@ import ListUsers from './ListUsers';
 import {Link} from 'react-router-dom';
 import { URL_USERS } from '../../constants';
 import axios from 'axios';
-import swal from 'sweetalert2';
+import Errors from '../errors/Errors';
+
+const errors = new Errors();
 
 class UsersSection extends Component {
+
+    
     componentDidMount() {
         this.getUsers();
       }
 
     getUsers = () => {
         console.log("buscando users en users -> " + this.props.auth.getAccessToken());
-        axios.get(`${URL_USERS}`,
-         {headers: {
-             "Authorization" : `Bearer ${this.props.auth.getAccessToken()}`
-           }
-         }).then(res => {
-           this.props.updateStateUsers(res.data)
+        axios.get(`${URL_USERS}`, {
+            headers: {
+                "Authorization": `Bearer ${this.props.auth.getAccessToken()}`
+            }
+        }).then(res => {
+            this.props.updateStateUsers(res.data)
+        }).catch(error => {
+            errors.showErrorForbidden();
         })
-   }  
+    }
 
    unblockUser = (userId) => {
        console.log(`unblockUser user ${userId}`)
-       swal({
-           title: `Estas seguro??`,
-           text: `Vas a desbloquear a ${userId} y podrá interactuar con los sistemas de MM!`,
-           type: 'warning',
-           showCancelButton: true,
-           confirmButtonColor: '#3085d6',
-           cancelButtonColor: '#d33',
-           confirmButtonText: 'Si, desbloquear!',
-           cancelButtonText: 'Cancelar'
-       }).then((result) => {
+       errors.getModalAlert("Estas seguro??",
+           `Vas a desbloquear a ${userId} y podrá interactuar con los sistemas de MM!`,
+           'Si, desbloquear!'
+       ).then((result) => {
            if (result.value) {
 
                const user = {
@@ -63,16 +63,10 @@ class UsersSection extends Component {
 
    delUser = (userId) => {
        console.log(`que borro al user ${userId}`)
-       swal({
-           title: `Estas seguro??`,
-           text: `Esta acción no se puede deshacer! Vas a borrar a ${userId}`,
-           type: 'warning',
-           showCancelButton: true,
-           confirmButtonColor: '#3085d6',
-           cancelButtonColor: '#d33',
-           confirmButtonText: 'Si, borrar!',
-           cancelButtonText: 'Cancelar'
-       }).then((result) => {
+       errors.getModalAlert("Estas seguro??",
+           `Esta acción no se puede deshacer! Vas a borrar a ${userId}`,
+           'Si, borrar!'
+       ).then((result) => {
            if (result.value) {
                axios.delete(`${URL_USERS}/${userId}`, {
                    headers: {
@@ -81,11 +75,9 @@ class UsersSection extends Component {
                }).then(res => {
                    console.log(res);
                    if (res.status === 204) {
-
-                       swal(
+                       errors.showSuccess(
                            'Eliminado!',
-                           'El usuario se ha eliminado.',
-                           'success'
+                           'El usuario se ha eliminado.'
                        );
                        const users = [...this.props.users];
 
@@ -95,12 +87,8 @@ class UsersSection extends Component {
 
                        this.props.updateStateUsers(resto)
                    } else {
-                       swal({
-                           type: 'error',
-                           title: 'Oops...',
-                           text: 'Something went wrong!'
-                           // footer: '<a href>Why do I have this issue?</a>'
-                       });
+                       errors.showError('Oops...',
+                           'Algo ha ido realmente mal!');
                    }
                })
 

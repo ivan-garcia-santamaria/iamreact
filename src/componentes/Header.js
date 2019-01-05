@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 
 const Header = () => {
      return ( 
-          <header className="col-12 col-md-8">
+          <header className="col-12">
                <Link to={'/'} >
                     <h1 className="text-center">IAM MasMovil!</h1>
                </Link>

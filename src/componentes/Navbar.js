@@ -34,7 +34,6 @@ class Navbar extends Component {
                <nav className="navegacion">
                     <Link to={'/users/'}>Usuarios</Link>
                     <Link to={'/groups/'}>Grupos</Link>
-                    <Link to={'/profiles/'}>Perfiles</Link>
                     <Link to={'/permissions/'}>Permisos</Link>
                     <Link to={'/roles/'}>Roles</Link>
                     { isAuthenticated() && (

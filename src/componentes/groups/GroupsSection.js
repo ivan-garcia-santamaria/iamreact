@@ -3,6 +3,9 @@ import axios from 'axios';
 import ListGroups from './ListGroups';
 import {Link} from 'react-router-dom';
 import { URL_GROUPS } from '../../constants';
+import Errors from '../errors/Errors';
+
+const errors = new Errors();
 
 class GroupsSection extends Component {
     state = { 
@@ -16,16 +19,19 @@ class GroupsSection extends Component {
 
     getGroups = () => {
         console.log("buscando grupos");
-        axios.get(`${URL_GROUPS}`,
-         {headers: {
-           }
-         }).then(res => {
-             console.log(res.data);
+        axios.get(`${URL_GROUPS}`, {
+            headers: {
+                "Authorization": `Bearer ${this.props.auth.getAccessToken()}`
+            }
+        }).then(res => {
+            console.log(res.data);
             this.setState({
                 groups: res.data
             })
-         })
-   }
+        }).catch(error => {
+            errors.showErrorForbidden();
+        })
+    }
     
       render() {
         return (

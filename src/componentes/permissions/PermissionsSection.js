@@ -3,6 +3,9 @@ import axios from 'axios';
 import ListPermissions from './ListPermissions';
 import {Link} from 'react-router-dom';
 import { URL_PERMISSIONS } from '../../constants';
+import Errors from '../errors/Errors';
+
+const errors = new Errors();
 
 class PermissionsSection extends Component {
     state = { 
@@ -16,16 +19,19 @@ class PermissionsSection extends Component {
 
     getPermissions = () => {
         console.log("buscando Permissions");
-        axios.get(`${URL_PERMISSIONS}`,
-         {headers: {
-           }
-         }).then(res => {
-             console.log(res.data);
+        axios.get(`${URL_PERMISSIONS}`, {
+            headers: {
+                "Authorization": `Bearer ${this.props.auth.getAccessToken()}`
+            }
+        }).then(res => {
+            console.log(res.data);
             this.setState({
                 permissions: res.data
             })
-         })
-   }
+        }).catch(error => {
+            errors.showErrorForbidden();
+        })
+    }
     
       render() {
         return (
