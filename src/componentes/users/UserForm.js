@@ -55,23 +55,17 @@ class UserForm extends Component {
     nombreRef = React.createRef();
     apellido1Ref = React.createRef();
     apellido2Ref = React.createRef();
-    emailRef = React.createRef();
     sfidRef = React.createRef();
 
     createLocalUser = (e) => {
         e.preventDefault();
 
         const user = {
-            connection: 'Username-Password-Authentication',
-            email: this.emailRef.current.value,
             given_name: this.nombreRef.current.value,
-            family_name: `${this.apellido1Ref.current.value} ${this.apellido2Ref.current.value}`,
+            family_name: this.apellido1Ref.current.value,
+            sencond_family_name: this.apellido2Ref.current.value,
             name: `${this.nombreRef.current.value} ${this.apellido1Ref.current.value} ${this.apellido2Ref.current.value}`,
-            username: this.usernameRef.current.value,
-            password: this.passwordRef.current.value,
             user_metadata: {},
-            verify_email: true,
-            blocked: true,
             app_metadata: {
                 sfid: this.sfidRef.current.value,
                 brands: masterTables.convertOptionsSimpleArray(this.state.brandsSelected)
@@ -209,15 +203,15 @@ class UserForm extends Component {
                     <div className="col-6">
                 <div className="form-group">
                     <label>Username:</label>
-                    <input type="text" defaultValue="ivan" ref={this.usernameRef} className="form-control" placeholder="Username"/>
+                    <input type="text" ref={this.usernameRef} readOnly className="form-control" placeholder="Username"/>
                 </div>
                 <div className="form-group">
                     <label>Password:</label>
-                    <input type="text" defaultValue="ivan2018@" ref={this.passwordRef} className="form-control" placeholder="Password"/>
+                    <input type="text" ref={this.passwordRef} readOnly className="form-control" placeholder="Password"/>
                 </div>
                 <div className="form-group">
                     <label>SFID:</label>
-                    <input type="text" defaultValue="SFID-BLA-BLA" ref={this.sfidRef} className="form-control" placeholder="Username"/>
+                    <input type="text" ref={this.sfidRef} readOnly className="form-control" placeholder="SFID"/>
                 </div>
                 <hr />
                 <div className="form-group">
@@ -231,10 +225,6 @@ class UserForm extends Component {
                 <div className="form-group">
                     <label>Segundo Apellido:</label>
                     <input type="text" ref={this.apellido2Ref} className="form-control" placeholder="Apellido2"/>
-                </div>
-                <div className="form-group">
-                    <label>Email:</label>
-                    <input type="text" defaultValue="garcia@gmail.com" ref={this.emailRef} className="form-control" placeholder="Email"/>
                 </div>
                 </div>
                 <div className="col-6">

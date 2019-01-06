@@ -63,18 +63,21 @@ class SingleUser extends Component {
 
     getBrands = () => {
         const {app_metadata} = this.props.user;
-        console.log(`obteniendo los roles al usuario ${app_metadata.brands[0]}`)
-        var brandsState = [];
-        for( var i = 0; i < app_metadata.brands.length; i++ ) {
-            const objIndex = this.state.brands.findIndex((obj => obj.value === app_metadata.brands[i]));
-            console.log("index: ", objIndex);
-            if (objIndex != -1) {
-                brandsState.push(this.state.brands[objIndex]);
-            }
+        if (app_metadata.brands) {
+            console.log(`obteniendo los roles al usuario ${app_metadata.brands[0]}`)
+            var brandsState = [];
+            for (var i = 0; i < app_metadata.brands.length; i++) {
+                const objIndex = this.state.brands.findIndex((obj => obj.value === app_metadata.brands[i]));
+                console.log("index: ", objIndex);
+                if (objIndex != -1) {
+                    brandsState.push(this.state.brands[objIndex]);
+                }
+            };
+
+            this.setState({
+                brandsSelected: brandsState
+            });
         }
-        this.setState({
-            brandsSelected: brandsState
-        })
     }
 
 
