@@ -63,7 +63,7 @@ class UserForm extends Component {
         const user = {
             given_name: this.nombreRef.current.value,
             family_name: this.apellido1Ref.current.value,
-            sencond_family_name: this.apellido2Ref.current.value,
+            second_family_name: this.apellido2Ref.current.value,
             name: `${this.nombreRef.current.value} ${this.apellido1Ref.current.value} ${this.apellido2Ref.current.value}`,
             user_metadata: {},
             app_metadata: {
