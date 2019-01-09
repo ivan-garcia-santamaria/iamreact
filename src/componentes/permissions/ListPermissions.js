@@ -30,6 +30,7 @@ class ListPermissions extends Component {
                         <th scope="col">id</th>
                         <th scope="col">Name</th>
                         <th scope="col">Descripcion</th>
+                        <th scope="col">Aplicacion</th>
                         <th scope="col">Acciones</th>
                     </tr> 
                 </thead>

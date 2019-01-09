@@ -69,7 +69,7 @@ class SingleUser extends Component {
             for (var i = 0; i < app_metadata.brands.length; i++) {
                 const objIndex = this.state.brands.findIndex((obj => obj.value === app_metadata.brands[i]));
                 console.log("index: ", objIndex);
-                if (objIndex != -1) {
+                if (objIndex !== -1) {
                     brandsState.push(this.state.brands[objIndex]);
                 }
             };

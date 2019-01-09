@@ -24,9 +24,9 @@ class RolesSection extends Component {
                 "Authorization": `Bearer ${this.props.auth.getAccessToken()}`
             }
         }).then(res => {
-            console.log(res.data);
+            console.log(res.data.roles);
             this.setState({
-                roles: res.data
+                roles: res.data.roles
             })
         }).catch(error => {
             errors.showErrorForbidden();
@@ -35,7 +35,7 @@ class RolesSection extends Component {
     
       render() {
         return (
-            <div className="col-12 col-md-8">
+            <div className="col-12 col-md-12">
                 <h2 className="text-center">Roles <Link to={'/createUser'}>+</Link></h2>
                 <ListRoles 
                     auth= {this.props.auth}

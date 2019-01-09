@@ -26,11 +26,11 @@ class ListRoles extends Component {
         return (
             <table className="table">
                 <thead>
-                    <tr> 
+                    <tr>
                         <th scope="col">id</th>
-                        <th scope="col">idPermission</th>
-                        <th scope="col">idProfile</th>
+                        <th scope="col">name</th>
                         <th scope="col">Descripcion</th>
+                        <th scope="col">applicationId</th>
                         <th scope="col">Acciones</th>
                     </tr> 
                 </thead>

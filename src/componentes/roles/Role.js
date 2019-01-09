@@ -5,15 +5,15 @@ import icon_delete from '../../iconfinder_DeleteRed_34218.png';
 class Role extends Component {
 
     render() {
-        const {id,idPermission,idProfile,description} =this.props.roles;
+        const {name,_id,description,applicationId} =this.props.role;
         return (
             <tr>
-                <td><Link to={`/roles/${id}`}>{id}</Link></td>
-                <td>{idPermission}</td>
-                <td>{idProfile}</td>
+                <td><Link to={`/roles/${_id}`}>{_id}</Link></td>
+                <td>{name}</td>
                 <td>{description}</td>
+                <td>{applicationId}</td>
                 <td>
-                    <img onClick={ () => this.props.delUser(id) } src={icon_delete} alt="Borrar" />
+                    <img onClick={ () => this.props.delUser(_id) } src={icon_delete} alt="Borrar" />
                 </td>
             </tr>
         );

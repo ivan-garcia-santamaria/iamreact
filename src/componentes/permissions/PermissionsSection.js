@@ -26,7 +26,7 @@ class PermissionsSection extends Component {
         }).then(res => {
             console.log(res.data);
             this.setState({
-                permissions: res.data
+                permissions: res.data.permissions
             })
         }).catch(error => {
             errors.showErrorForbidden();
@@ -35,7 +35,7 @@ class PermissionsSection extends Component {
     
       render() {
         return (
-            <div className="col-12 col-md-8">
+            <div className="col-12 col-md-12">
                 <h2 className="text-center">Permisos <Link to={'/createUser'}>+</Link></h2>
                 <ListPermissions 
                     auth= {this.props.auth}
