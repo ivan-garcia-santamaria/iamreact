@@ -4,5 +4,5 @@ export const URL_APPS = 'https://masmovil-test-dev.apigee.net/masmovil/iam/v1/ap
 export const URL_ROLES = 'https://masmovil-test-dev.apigee.net/masmovil/iam/v1/ext/roles';
 export const URL_GROUPS = 'https://masmovil-test-dev.apigee.net/masmovil/iam/v1/ext/groups';
 export const URL_PERMISSIONS = 'https://masmovil-test-dev.apigee.net/masmovil/iam/v1/ext/permissions';
-export const URL_PROFILES = 'https://vertx.lab.ovid-project.com/iam/v1/profiles/';
-export const URL_BRANDS = 'https://vertx.lab.ovid-project.com/iam/v1/brands/';
+export const URL_PROFILES = 'https://pocs-lab.dev.ovid-project.com/iam/v1/profiles/';
+export const URL_BRANDS = 'https://pocs-lab.dev.ovid-project.com/iam/v1/brands/';

@@ -211,7 +211,7 @@ class UserForm extends Component {
                 </div>
                 <div className="form-group">
                     <label>SFID:</label>
-                    <input type="text" ref={this.sfidRef} readOnly className="form-control" placeholder="SFID"/>
+                    <input type="text" ref={this.sfidRef} className="form-control" placeholder="SFID"/>
                 </div>
                 <hr />
                 <div className="form-group">
